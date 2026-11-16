@@ -154,7 +154,7 @@ body{padding-top:88px!important}
  <div class="lt-bar">
   <span class="lt-disc" aria-hidden="true">♫</span>
   <div class="lt-track-info" aria-live="polite">
-   <span id="lt-ost-person" class="lt-track-person">MICHELE · 미켈레 · 01 / 07</span>
+   <span id="lt-ost-person" class="lt-track-person">MICHELE · 미켈레 · 01 / 08</span>
    <span id="lt-ost-song" class="lt-track-song" title="L'AUREOLA DI CENERE">L'AUREOLA DI CENERE</span>
   </div>
   <div class="lt-buttons">
@@ -168,7 +168,7 @@ body{padding-top:88px!important}
  </div>
  <input id="lt-ost-progress" class="lt-ost-progress" type="range" min="0" max="1000" value="0" aria-label="음악 재생 위치"/>
  <div id="lt-ost-list" class="lt-ost-list" hidden>
-  <div class="lt-list-heading">LA TRINITÀ · SOUNDTRACK <small>7 TRACKS / 4 CHARACTERS</small></div>
+  <div class="lt-list-heading">LA TRINITÀ · SOUNDTRACK <small>8 TRACKS / 4 CHARACTERS</small></div>
   <div id="lt-ost-choices"></div>
  </div>
  <div id="lt-ost-status" class="lt-ost-status" role="status" aria-live="polite" data-show="false"></div>
@@ -252,6 +252,12 @@ body{padding-top:88px!important}
     "latin": "MICHELE",
     "title": "L'AUREOLA DI CENERE",
     "url": "https://raw.githubusercontent.com/unm-1/l/main/L%27AUREOLA%20DI%20CENERE%20-%20MICHELE.mp3"
+  },
+  {
+    "character": "미켈레",
+    "latin": "MICHELE",
+    "title": "VELENO DI VELLUTO",
+    "url": "https://raw.githubusercontent.com/unm-1/l/main/VELENO%20DI%20VELLUTO%20%E2%80%94%20MICHELE.mp3"
   },
   {
     "character": "피에트로",
@@ -352,7 +358,7 @@ body{padding-top:88px!important}
   }
   function update() {
     const t = tracks[index];
-    person.textContent = t.latin + ' · ' + t.character + ' · ' + String(index + 1).padStart(2,'0') + ' / 07';
+    person.textContent = t.latin + ' · ' + t.character + ' · ' + String(index + 1).padStart(2,'0') + ' / '+String(tracks.length).padStart(2,'0');
     song.textContent = t.title;
     song.title = t.title + ' — ' + t.latin;
     play.textContent = audio.paused ? '▶' : '❚❚';
