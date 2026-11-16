@@ -114,39 +114,62 @@
 @media(max-width:390px){.entry-grid{grid-template-columns:1fr}}
 </style>
 <style id="lt-ost-styles">
-/* Compact fixed soundtrack bar, isolated from dossier styles */
-body{padding-top:77px!important}
-#lt-ost-player{box-sizing:border-box;position:fixed;inset:0 0 auto 0;z-index:99999;height:53px;background:rgba(29,27,25,.96);border-bottom:1px solid #796448;box-shadow:0 3px 15px rgba(0,0,0,.35);color:#eee2cf;font-family:Georgia,'Noto Serif KR',serif;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+/* Compact OST player: fixed top bar. Original dossier content is untouched. */
+body{padding-top:88px!important}
+#lt-ost-player{box-sizing:border-box;position:fixed;inset:0 0 auto 0;z-index:99999;height:61px;background:rgba(28,25,23,.97);border-bottom:1px solid #8b7051;box-shadow:0 4px 20px rgba(0,0,0,.34);color:#eae0cf;font-family:Georgia,'Noto Serif KR',serif;backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px)}
 #lt-ost-player *{box-sizing:border-box}
-.lt-ost-inner{height:100%;max-width:720px;margin:0 auto;padding:0 11px;display:flex;gap:7px;align-items:center;white-space:nowrap}
-.lt-ost-name{display:flex;align-items:center;gap:7px;flex:1;min-width:0;overflow:hidden;font-size:10px;font-weight:700;letter-spacing:.10em;color:#e4d1b2}
-.lt-ost-symbol{font-size:17px;line-height:1;color:#c7a67a}
-.lt-ost-name-text{overflow:hidden;text-overflow:ellipsis}
-.lt-ost-sub{font:9px/1.2 'Courier New',monospace;letter-spacing:.07em;color:#b7a286;max-width:93px;overflow:hidden;text-overflow:ellipsis}
-#lt-ost-player button{appearance:none;cursor:pointer;font:11px/1 Georgia,serif;border:1px solid #73614e;border-radius:5px;background:#282421;color:#eadcc7;height:28px;min-width:29px;padding:0 7px;transition:background .15s,border-color .15s}
-#lt-ost-player button:hover,#lt-ost-player button:focus-visible{background:#483b2f;border-color:#c4a177;outline:0}
-#lt-ost-player .lt-ost-track[aria-pressed="true"]{background:#77583b;border-color:#d1ad7c;color:#fff9ef}
-#lt-ost-player #lt-ost-toggle{width:34px;height:32px;background:#ac855a;color:#17130f;border:1px solid #d9b585;font-size:14px}
-#lt-ost-player #lt-ost-toggle:hover{background:#d0ad7b}
-.lt-ost-progress{width:67px;height:4px;accent-color:#c7a579;cursor:pointer}
-.lt-ost-status{position:absolute;right:11px;top:100%;padding:4px 9px;background:rgba(41,36,31,.93);border:1px solid #655743;border-top:0;border-radius:0 0 5px 5px;color:#e6d5bc;font:10px/1.2 'Noto Serif KR',serif;display:none}
-.lt-ost-status[data-show="true"]{display:block}
-@media(max-width:600px){body{padding-top:65px!important}#lt-ost-player{height:49px}.lt-ost-inner{padding:0 7px;gap:5px}.lt-ost-name{font-size:9px;letter-spacing:.045em;gap:4px}.lt-ost-symbol{font-size:14px}.lt-ost-sub{display:none}.lt-ost-progress{width:43px;min-width:36px}#lt-ost-player button{min-width:27px;padding:0 5px}}
-@media(max-width:355px){.lt-ost-name-text{font-size:0}.lt-ost-name-text:before{content:'OST';font-size:10px}.lt-ost-progress{width:35px}}
+#lt-ost-player .lt-bar{max-width:720px;height:57px;margin:0 auto;padding:0 11px;display:flex;align-items:center;gap:8px;white-space:nowrap}
+#lt-ost-player .lt-disc{width:27px;height:27px;border:1px solid #96795a;border-radius:50%;display:grid;place-items:center;flex-shrink:0;color:#e6c397;font-size:15px;line-height:1}
+#lt-ost-player .lt-track-info{min-width:0;flex:1;display:flex;flex-direction:column;justify-content:center;gap:3px}
+#lt-ost-player .lt-track-person{font:700 9px/1.1 'Courier New',monospace;letter-spacing:.14em;color:#bfa583;overflow:hidden;text-overflow:ellipsis}
+#lt-ost-player .lt-track-song{font:600 12px/1.15 Georgia,'Noto Serif KR',serif;letter-spacing:.02em;color:#f2e6d4;overflow:hidden;text-overflow:ellipsis}
+#lt-ost-player .lt-buttons{display:flex;gap:5px;flex-shrink:0;align-items:center}
+#lt-ost-player button{appearance:none;cursor:pointer;font:12px/1 Georgia,serif;border:1px solid #75614c;border-radius:5px;background:#302923;color:#eadcc7;height:30px;min-width:30px;padding:0 7px;display:inline-flex;align-items:center;justify-content:center;transition:background .15s,border-color .15s}
+#lt-ost-player button:hover,#lt-ost-player button:focus-visible{background:#564535;border-color:#d7ae79;outline:none}
+#lt-ost-player button:focus-visible{box-shadow:0 0 0 2px #e1c18d}
+#lt-ost-player #lt-ost-toggle{height:34px;min-width:36px;background:#c69e6d;border-color:#e2bd8d;color:#211a14;font-size:15px}
+#lt-ost-player #lt-ost-toggle:hover{background:#e0b789}
+#lt-ost-player .lt-ost-progress{appearance:none;display:block;width:min(720px,100%);height:4px;margin:0 auto;background:#67513c;cursor:pointer;border-radius:0;accent-color:#e3bb87}
+#lt-ost-player .lt-ost-progress::-webkit-slider-thumb{appearance:none;width:9px;height:9px;border-radius:50%;background:#e3bb87}
+#lt-ost-player .lt-ost-progress::-moz-range-thumb{width:9px;height:9px;border-radius:50%;background:#e3bb87;border:0}
+#lt-ost-player .lt-ost-list{position:absolute;z-index:100000;top:61px;left:50%;transform:translateX(-50%);width:min(720px,calc(100% - 14px));max-height:min(65vh,490px);overflow:auto;padding:11px 12px 14px;border:1px solid #90704e;border-top:0;border-radius:0 0 9px 9px;background:#201c19;box-shadow:0 15px 25px rgba(0,0,0,.46);scrollbar-color:#8a6d50 #211c19}
+#lt-ost-player .lt-ost-list[hidden]{display:none!important}
+#lt-ost-player .lt-list-heading{display:flex;justify-content:space-between;align-items:center;padding:2px 5px 8px;border-bottom:1px solid #70573d;font:700 10px/1.5 'Courier New',monospace;letter-spacing:.16em;color:#d6b78f}
+#lt-ost-player .lt-list-heading small{font-size:9px;font-weight:400;letter-spacing:.04em;color:#a9977d}
+#lt-ost-player .lt-group-label{margin:12px 4px 5px;font:700 10px/1.5 'Courier New',monospace;color:#bc9c74;letter-spacing:.13em}
+#lt-ost-player .lt-group-label span{font-family:'Noto Serif KR',serif;font-weight:400;letter-spacing:0;color:#9d907b;margin-left:5px}
+#lt-ost-player .lt-choice{display:flex;align-items:center;width:100%;height:auto;min-height:36px;gap:9px;text-align:left;justify-content:flex-start;padding:7px 10px;margin:3px 0;border-color:transparent;border-radius:5px;background:#2b2520;line-height:1.4}
+#lt-ost-player .lt-choice .lt-number{color:#aa8e6a;font:10px 'Courier New',monospace;min-width:18px}
+#lt-ost-player .lt-choice .lt-choice-name{white-space:normal;word-break:break-word;font:11px/1.45 Georgia,'Noto Serif KR',serif;letter-spacing:.03em;flex:1}
+#lt-ost-player .lt-choice .lt-indicator{min-width:12px;text-align:right;color:#e4b47c}
+#lt-ost-player .lt-choice[aria-current="true"]{border:1px solid #bc9469;background:#49382b;color:#fff8e8}
+#lt-ost-player .lt-ost-status{position:absolute;right:10px;top:100%;padding:5px 9px;background:#332b24;border:1px solid #81634a;border-top:0;border-radius:0 0 5px 5px;color:#eee0cd;font:10px/1.4 'Noto Serif KR',serif;display:none;max-width:min(330px,90vw)}
+#lt-ost-player .lt-ost-status[data-show="true"]{display:block}
+@media(max-width:600px){body{padding-top:78px!important}#lt-ost-player{height:57px}#lt-ost-player .lt-bar{height:53px;padding:0 7px;gap:5px}#lt-ost-player .lt-disc{width:23px;height:23px;font-size:12px}#lt-ost-player .lt-track-person{font-size:8px;letter-spacing:.07em}#lt-ost-player .lt-track-song{font-size:10px}#lt-ost-player .lt-buttons{gap:3px}#lt-ost-player button{height:29px;min-width:27px;padding:0 5px}#lt-ost-player #lt-ost-toggle{height:31px;min-width:31px}#lt-ost-player .lt-ost-list{top:57px}}
+@media(max-width:350px){#lt-ost-player .lt-disc{display:none}#lt-ost-player .lt-buttons{gap:2px}#lt-ost-player button{min-width:25px}}
 @media print{#lt-ost-player{display:none!important}body{padding-top:0!important}}
 </style>
 </head><body>
-<div id="lt-ost-player" role="region" aria-label="라 트리니타 배경음악 플레이어">
- <div class="lt-ost-inner">
-  <div class="lt-ost-name" title="LA TRINITÀ — ORIGINAL SOUNDTRACK"><span class="lt-ost-symbol" aria-hidden="true">♫</span><span class="lt-ost-name-text">LA TRINITÀ - MICHELE · OST</span></div>
-  <span id="lt-ost-track-label" class="lt-ost-sub" aria-live="polite">TRACK 01</span>
-  <button type="button" class="lt-ost-track" data-track="0" aria-label="첫 번째 곡 재생" aria-pressed="true">01</button>
-  <button type="button" class="lt-ost-track" data-track="1" aria-label="두 번째 곡 재생" aria-pressed="false">02</button>
-  <button type="button" id="lt-ost-toggle" aria-label="음악 재생" title="재생 / 일시정지">▶</button>
-  <button type="button" id="lt-ost-next" aria-label="다음 곡" title="다음 곡">⏭</button>
-  <input id="lt-ost-progress" class="lt-ost-progress" type="range" min="0" max="1000" value="0" aria-label="음악 재생 위치"/>
-  <button type="button" id="lt-ost-mute" aria-label="음소거" title="음소거 / 해제">♫</button>
-  <audio id="lt-ost-audio" preload="auto" autoplay playsinline src="https://raw.githubusercontent.com/unm-1/l/main/m01.mp3"></audio>
+<div id="lt-ost-player" role="region" aria-label="라 트리니타 캐릭터별 음악 플레이어">
+ <div class="lt-bar">
+  <span class="lt-disc" aria-hidden="true">♫</span>
+  <div class="lt-track-info" aria-live="polite">
+   <span id="lt-ost-person" class="lt-track-person">MICHELE · 미켈레 · 01 / 07</span>
+   <span id="lt-ost-song" class="lt-track-song" title="L'AUREOLA DI CENERE">L'AUREOLA DI CENERE</span>
+  </div>
+  <div class="lt-buttons">
+   <button type="button" id="lt-ost-prev" aria-label="이전 곡" title="이전 곡">❮</button>
+   <button type="button" id="lt-ost-toggle" aria-label="재생" title="재생 / 일시정지">▶</button>
+   <button type="button" id="lt-ost-next" aria-label="다음 곡" title="다음 곡">❯</button>
+   <button type="button" id="lt-ost-list-toggle" aria-label="곡 목록 보기" aria-controls="lt-ost-list" aria-expanded="false" title="캐릭터별 곡 목록">☷</button>
+   <button type="button" id="lt-ost-mute" aria-label="음소거" title="음소거 / 해제">♫</button>
+  </div>
+  <audio id="lt-ost-audio" preload="auto" autoplay playsinline></audio>
+ </div>
+ <input id="lt-ost-progress" class="lt-ost-progress" type="range" min="0" max="1000" value="0" aria-label="음악 재생 위치"/>
+ <div id="lt-ost-list" class="lt-ost-list" hidden>
+  <div class="lt-list-heading">LA TRINITÀ · SOUNDTRACK <small>7 TRACKS / 4 CHARACTERS</small></div>
+  <div id="lt-ost-choices"></div>
  </div>
  <div id="lt-ost-status" class="lt-ost-status" role="status" aria-live="polite" data-show="false"></div>
 </div>
@@ -224,93 +247,194 @@ body{padding-top:77px!important}
 (function () {
   'use strict';
   const tracks = [
-    'https://raw.githubusercontent.com/unm-1/l/main/m01.mp3',
-    'https://raw.githubusercontent.com/unm-1/l/main/m02.mp3'
-  ];
+  {
+    "character": "미켈레",
+    "latin": "MICHELE",
+    "title": "L'AUREOLA DI CENERE",
+    "url": "https://raw.githubusercontent.com/unm-1/l/main/L%27AUREOLA%20DI%20CENERE%20-%20MICHELE.mp3"
+  },
+  {
+    "character": "피에트로",
+    "latin": "PIETRO",
+    "title": "FERRO SOTTO PELLE",
+    "url": "https://raw.githubusercontent.com/unm-1/l/main/FERRO%20SOTTO%20PELLE%20%E2%80%94%20PIETRO.mp3"
+  },
+  {
+    "character": "피에트로",
+    "latin": "PIETRO",
+    "title": "FINO ALL'ULTIMO COLPO",
+    "url": "https://raw.githubusercontent.com/unm-1/l/main/FINO%20ALL%27ULTIMO%20COLPO%20-%20PIETRO.mp3"
+  },
+  {
+    "character": "마테오",
+    "latin": "MATTEO",
+    "title": "INCHIOSTRO E SETA",
+    "url": "https://raw.githubusercontent.com/unm-1/l/main/INCHIOSTRO%20E%20SETA%20%E2%80%94%20MATTEO.mp3"
+  },
+  {
+    "character": "마테오",
+    "latin": "MATTEO",
+    "title": "SORRISO DI VETRO",
+    "url": "https://raw.githubusercontent.com/unm-1/l/main/SORRISO%20DI%20VETRO%20%E2%80%94%20MATTEO.mp3"
+  },
+  {
+    "character": "마달레나",
+    "latin": "MADDALENA",
+    "title": "BACIO AL NEON",
+    "url": "https://raw.githubusercontent.com/unm-1/l/main/BACIO%20AL%20NEON%20%E2%80%94%20MADDALENA.mp3"
+  },
+  {
+    "character": "마달레나",
+    "latin": "MADDALENA",
+    "title": "ROSSETTO SUL VETRO",
+    "url": "https://raw.githubusercontent.com/unm-1/l/main/ROSSETTO%20SUL%20VETRO%20-%20MADDALENA.mp3"
+  }
+];
   const audio = document.getElementById('lt-ost-audio');
   const play = document.getElementById('lt-ost-toggle');
+  const prev = document.getElementById('lt-ost-prev');
   const next = document.getElementById('lt-ost-next');
   const mute = document.getElementById('lt-ost-mute');
   const seek = document.getElementById('lt-ost-progress');
-  const title = document.getElementById('lt-ost-track-label');
+  const person = document.getElementById('lt-ost-person');
+  const song = document.getElementById('lt-ost-song');
+  const listButton = document.getElementById('lt-ost-list-toggle');
+  const list = document.getElementById('lt-ost-list');
+  const choices = document.getElementById('lt-ost-choices');
   const status = document.getElementById('lt-ost-status');
-  const selectors = Array.from(document.querySelectorAll('#lt-ost-player [data-track]'));
-  let trackIndex = 0;
-  let deliberatelyPaused = false;
+  let index = 0;
   let pendingUnlock = false;
-  let statusTimer;
+  let deliberatelyPaused = false;
+  let statusTimer = null;
+  let currentRequest = 0;
 
   audio.volume = 0.55;
-  function message(text, show) {
+  audio.src = tracks[0].url;
+
+  // List tracks under each character: headings and titles are textContent, never HTML.
+  const names = ['MICHELE', 'PIETRO', 'MATTEO', 'MADDALENA'];
+  const buttons = [];
+  names.forEach(name => {
+    const group = tracks.filter(track => track.latin === name);
+    const heading = document.createElement('div');
+    heading.className = 'lt-group-label';
+    heading.textContent = name;
+    const korean = document.createElement('span');
+    korean.textContent = ' / ' + group[0].character;
+    heading.appendChild(korean);
+    choices.appendChild(heading);
+    tracks.forEach((track, number) => {
+      if (track.latin !== name) return;
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'lt-choice';
+      const n = document.createElement('span');
+      n.className = 'lt-number';
+      n.textContent = String(number + 1).padStart(2,'0');
+      const title = document.createElement('span');
+      title.className = 'lt-choice-name';
+      title.textContent = track.title;
+      const indicator = document.createElement('span');
+      indicator.className = 'lt-indicator';
+      btn.append(n,title,indicator);
+      btn.setAttribute('aria-label', track.character + ' - ' + track.title + ' 재생');
+      btn.addEventListener('click', () => { selectTrack(number, true); toggleList(false); });
+      choices.appendChild(btn);
+      buttons[number] = {btn, indicator};
+    });
+  });
+
+  function notify(text, show) {
     status.textContent = text;
     status.dataset.show = String(!!show);
-    clearTimeout(statusTimer);
-    if (show) statusTimer = setTimeout(() => { status.dataset.show = 'false'; }, 6500);
+    if (statusTimer !== null) clearTimeout(statusTimer);
+    if (show) statusTimer = setTimeout(() => { status.dataset.show = 'false'; }, 5000);
   }
-  function updateUI() {
+  function update() {
+    const t = tracks[index];
+    person.textContent = t.latin + ' · ' + t.character + ' · ' + String(index + 1).padStart(2,'0') + ' / 07';
+    song.textContent = t.title;
+    song.title = t.title + ' — ' + t.latin;
     play.textContent = audio.paused ? '▶' : '❚❚';
-    play.setAttribute('aria-label', audio.paused ? '음악 재생' : '음악 일시정지');
+    play.setAttribute('aria-label', audio.paused ? '재생' : '일시정지');
     mute.textContent = audio.muted ? '×' : '♫';
     mute.setAttribute('aria-label', audio.muted ? '음소거 해제' : '음소거');
-    title.textContent = 'TRACK 0' + (trackIndex + 1);
-    selectors.forEach((button, i) => button.setAttribute('aria-pressed', String(i === trackIndex)));
+    buttons.forEach((b, i) => {
+      b.btn.setAttribute('aria-current', String(i === index));
+      b.indicator.textContent = i === index ? (audio.paused ? '●' : '♫') : '';
+    });
   }
-  function tryPlay() {
+  function attemptPlay() {
+    const request = ++currentRequest;
     deliberatelyPaused = false;
-    let attempt;
-    try { attempt = audio.play(); }
-    catch (err) { message('재생 버튼을 눌러주세요', true); pendingUnlock = true; return; }
-    if (attempt && typeof attempt.then === 'function') {
-      attempt.then(() => { pendingUnlock = false; message('', false); updateUI(); })
-        .catch(err => {
-          pendingUnlock = err.name === 'NotAllowedError';
-          message(pendingUnlock ? '자동재생 제한 · ▶ 눌러 재생' : '음원을 불러올 수 없습니다', true);
-          updateUI();
-        });
+    let result;
+    try { result = audio.play(); }
+    catch(e) { pendingUnlock = true; notify('브라우저 자동재생 제한 · ▶ 버튼을 눌러주세요',true); return; }
+    if (result && typeof result.then === 'function') {
+      result.then(() => {
+        if (request !== currentRequest) return;
+        pendingUnlock = false;
+        notify('', false);
+        update();
+      }).catch(e => {
+        if (request !== currentRequest) return;
+        pendingUnlock = e.name === 'NotAllowedError';
+        notify(pendingUnlock ? '자동재생 제한 · ▶ 버튼을 눌러주세요' : '음원을 불러오지 못했습니다',true);
+        update();
+      });
     }
   }
-  function changeTrack(index, shouldPlay) {
-    trackIndex = (index + tracks.length) % tracks.length;
+  function selectTrack(i, shouldPlay) {
+    currentRequest += 1;
+    index = (i + tracks.length) % tracks.length;
     audio.pause();
-    audio.src = tracks[trackIndex];
+    audio.src = tracks[index].url;
     audio.load();
     seek.value = 0;
-    updateUI();
-    if (shouldPlay) tryPlay();
+    update();
+    if (shouldPlay) attemptPlay();
+  }
+  function toggleList(open) {
+    list.hidden = !open;
+    listButton.setAttribute('aria-expanded', String(open));
+    listButton.title = open ? '목록 닫기' : '캐릭터별 곡 목록';
   }
   play.addEventListener('click', () => {
     if (!audio.paused) {
+      ++currentRequest;
       deliberatelyPaused = true;
       pendingUnlock = false;
       audio.pause();
-      message('', false);
-    } else tryPlay();
-    updateUI();
+      notify('', false);
+    } else attemptPlay();
+    update();
   });
-  selectors.forEach(button => button.addEventListener('click', () => changeTrack(Number(button.dataset.track), true)));
-  next.addEventListener('click', () => changeTrack(trackIndex + 1, true));
-  mute.addEventListener('click', () => { audio.muted = !audio.muted; updateUI(); });
-  audio.addEventListener('play', updateUI);
-  audio.addEventListener('pause', updateUI);
-  audio.addEventListener('ended', () => changeTrack(trackIndex + 1, true));
-  audio.addEventListener('timeupdate', () => {
-    if (Number.isFinite(audio.duration) && audio.duration > 0) seek.value = Math.round((audio.currentTime / audio.duration) * 1000);
-  });
-  seek.addEventListener('input', () => {
-    if (Number.isFinite(audio.duration) && audio.duration > 0) audio.currentTime = (Number(seek.value) / 1000) * audio.duration;
-  });
-  audio.addEventListener('error', () => { message('음원 연결을 확인해 주세요', true); updateUI(); });
-  // Browsers may block audible autoplay. The first interaction outside the player
-  // counts as a user gesture, allowing the site to begin playing when permitted.
-  function unlockOnInteraction(event) {
+  prev.addEventListener('click', () => selectTrack(index - 1,true));
+  next.addEventListener('click', () => selectTrack(index + 1,true));
+  mute.addEventListener('click', () => { audio.muted = !audio.muted; update(); });
+  listButton.addEventListener('click', () => toggleList(list.hidden));
+  document.addEventListener('pointerdown', (e) => {
+    if (!list.hidden && !document.getElementById('lt-ost-player').contains(e.target)) toggleList(false);
     if (!pendingUnlock || deliberatelyPaused) return;
-    if (event.target.closest && event.target.closest('#lt-ost-player')) return;
-    tryPlay();
-  }
-  document.addEventListener('pointerdown', unlockOnInteraction, {passive:true});
-  document.addEventListener('keydown', unlockOnInteraction);
-  updateUI();
-  tryPlay();
+    if (document.getElementById('lt-ost-player').contains(e.target)) return;
+    attemptPlay();
+  }, {passive:true});
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && !list.hidden) { toggleList(false); listButton.focus(); }
+    if (pendingUnlock && !deliberatelyPaused) attemptPlay();
+  });
+  audio.addEventListener('play',update);
+  audio.addEventListener('pause',update);
+  audio.addEventListener('ended',() => selectTrack(index+1,true));
+  audio.addEventListener('timeupdate',() => {
+    if (Number.isFinite(audio.duration) && audio.duration>0) seek.value = String(Math.round(audio.currentTime/audio.duration*1000));
+  });
+  seek.addEventListener('input',() => {
+    if (Number.isFinite(audio.duration) && audio.duration>0) audio.currentTime = Number(seek.value)/1000*audio.duration;
+  });
+  audio.addEventListener('error', () => { notify('음원 주소와 인터넷 연결을 확인해 주세요',true); update(); });
+  update();
+  attemptPlay();
 })();
 </script>
 </body></html>
