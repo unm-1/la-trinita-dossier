@@ -148,8 +148,35 @@ body{padding-top:88px!important}
 @media(max-width:600px){body{padding-top:78px!important}#lt-ost-player{height:57px}#lt-ost-player .lt-bar{height:53px;padding:0 7px;gap:5px}#lt-ost-player .lt-disc{width:23px;height:23px;font-size:12px}#lt-ost-player .lt-track-person{font-size:8px;letter-spacing:.07em}#lt-ost-player .lt-track-song{font-size:10px}#lt-ost-player .lt-buttons{gap:3px}#lt-ost-player button{height:29px;min-width:27px;padding:0 5px}#lt-ost-player #lt-ost-toggle{height:31px;min-width:31px}#lt-ost-player .lt-ost-list{top:57px}}
 @media(max-width:350px){#lt-ost-player .lt-disc{display:none}#lt-ost-player .lt-buttons{gap:2px}#lt-ost-player button{min-width:25px}}
 @media print{#lt-ost-player{display:none!important}body{padding-top:0!important}}
+
+
+/* Expandable bilingual lyrics, matching the existing restrained dossier theme. */
+#lt-ost-player #lt-ost-lyrics-toggle{min-width:34px;font:600 10px/1.1 'Noto Serif KR',serif;letter-spacing:-.02em}
+#lt-ost-player #lt-ost-lyrics-toggle[aria-expanded="true"]{background:#624a34;color:#ffebce;border-color:#c6a273}
+#lt-ost-player .lt-lyrics-panel{position:absolute;top:61px;left:50%;transform:translateX(-50%);width:min(720px,calc(100% - 14px));border:1px solid #90704e;border-top:0;border-radius:0 0 10px 10px;background:#211c19;box-shadow:0 16px 28px rgba(0,0,0,.5);overflow:hidden;max-height:min(74vh,700px);display:flex;flex-direction:column;white-space:normal}
+#lt-ost-player .lt-lyrics-panel[hidden]{display:none!important}
+#lt-ost-player .lt-lyrics-panel:not([hidden]) ~ .lt-ost-status,#lt-ost-player .lt-ost-list:not([hidden]) ~ .lt-ost-status{display:none!important}
+#lt-ost-player .lt-lyrics-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px;background:#30251e;border-bottom:1px solid #6d5038}
+#lt-ost-player .lt-lyrics-heading-main{min-width:0;flex:1}
+#lt-ost-player .lt-lyrics-heading-kicker{font:700 9px/1.5 'Courier New',monospace;letter-spacing:.15em;color:#c8a67e}
+#lt-ost-player .lt-lyrics-song{font:600 12px/1.5 Georgia,serif;color:#f2e6d4;overflow:hidden;text-overflow:ellipsis}
+#lt-ost-player #lt-ost-lyrics-close{font:600 11px/1 'Noto Serif KR',serif;min-width:27px;height:27px}
+#lt-ost-player .lt-lyrics-scroll{padding:18px 17px 25px;overflow:auto;overscroll-behavior:contain;scrollbar-color:#9a7656 #211c19;line-height:1.75}
+#lt-ost-player .lt-lyrics-pair{text-align:center;margin:0 auto 9px;white-space:normal;word-break:keep-all;overflow-wrap:break-word}
+#lt-ost-player .lt-lyrics-it{font:500 13px/1.75 Georgia,serif;color:#f5e9dc}
+#lt-ost-player .lt-lyrics-ko{font:400 12px/1.75 'Noto Serif KR',serif;color:#c0ac93;margin-top:2px}
+#lt-ost-player .lt-lyrics-gap{height:21px}
+#lt-ost-player .lt-lyrics-empty{text-align:center;color:#c0ac93;font-size:12px}
+@media(max-width:600px){#lt-ost-player .lt-lyrics-panel{top:57px;max-height:72vh}#lt-ost-player .lt-lyrics-heading{padding:9px 12px}#lt-ost-player .lt-lyrics-scroll{padding:14px 10px 22px}#lt-ost-player .lt-lyrics-it{font-size:12px}#lt-ost-player .lt-lyrics-ko{font-size:11px}#lt-ost-player .lt-lyrics-gap{height:17px}#lt-ost-player #lt-ost-lyrics-toggle{min-width:30px;font-size:10px}}
+@media print{#lt-ost-player .lt-lyrics-panel{display:none!important}}
+
 </style>
-</head><body>
+<style id="lt-audio-fix">
+/* Browser-native player remains available as a playback fallback. */
+#lt-ost-player #lt-ost-audio{display:none;}
+#lt-ost-player.lt-show-native #lt-ost-audio{display:block;position:absolute;top:calc(100% + 3px);left:50%;transform:translateX(-50%);width:min(390px,calc(100% - 20px));height:42px;z-index:100004;background:#2d2823;border:1px solid #96795a;border-radius:8px}
+#lt-ost-player .lt-ost-status[data-show="true"]{display:block;max-width:min(350px,calc(100vw - 16px));}
+</style></head><body>
 <div id="lt-ost-player" role="region" aria-label="라 트리니타 캐릭터별 음악 플레이어">
  <div class="lt-bar">
   <span class="lt-disc" aria-hidden="true">♫</span>
@@ -161,16 +188,24 @@ body{padding-top:88px!important}
    <button type="button" id="lt-ost-prev" aria-label="이전 곡" title="이전 곡">❮</button>
    <button type="button" id="lt-ost-toggle" aria-label="재생" title="재생 / 일시정지">▶</button>
    <button type="button" id="lt-ost-next" aria-label="다음 곡" title="다음 곡">❯</button>
+    <button type="button" id="lt-ost-lyrics-toggle" aria-label="가사 보기" aria-controls="lt-ost-lyrics" aria-expanded="false" title="원문·한국어 가사">가사</button>
    <button type="button" id="lt-ost-list-toggle" aria-label="곡 목록 보기" aria-controls="lt-ost-list" aria-expanded="false" title="캐릭터별 곡 목록">☷</button>
    <button type="button" id="lt-ost-mute" aria-label="음소거" title="음소거 / 해제">♫</button>
   </div>
-  <audio id="lt-ost-audio" preload="auto" autoplay playsinline></audio>
+  <audio id="lt-ost-audio" src="https://raw.githubusercontent.com/unm-1/l/main/L%27AUREOLA%20DI%20CENERE%20-%20MICHELE.mp3" preload="metadata" playsinline></audio>
  </div>
  <input id="lt-ost-progress" class="lt-ost-progress" type="range" min="0" max="1000" value="0" aria-label="음악 재생 위치"/>
  <div id="lt-ost-list" class="lt-ost-list" hidden>
   <div class="lt-list-heading">LA TRINITÀ · SOUNDTRACK <small>8 TRACKS / 4 CHARACTERS</small></div>
   <div id="lt-ost-choices"></div>
  </div>
+  <section id="lt-ost-lyrics" class="lt-lyrics-panel" role="region" aria-label="선택된 곡 이탈리아어 한국어 가사" hidden>
+    <div class="lt-lyrics-heading">
+      <div class="lt-lyrics-heading-main"><div class="lt-lyrics-heading-kicker">LYRICS · ITALIANO / 한국어</div><div id="lt-ost-lyrics-title" class="lt-lyrics-song"></div><button type="button" id="lt-ost-native-toggle" style="margin-left:6px;height:25px;font:10px/1.2 sans-serif" aria-label="브라우저 기본 플레이어 열기">기본 플레이어</button></div>
+      <button type="button" id="lt-ost-lyrics-close" aria-label="가사 닫기" title="가사 닫기">✕</button>
+    </div>
+    <div id="lt-ost-lyrics-content" class="lt-lyrics-scroll" tabindex="0" aria-label="가사 스크롤"></div>
+  </section>
  <div id="lt-ost-status" class="lt-ost-status" role="status" aria-live="polite" data-show="false"></div>
 </div>
 <main><section class="sheet"><span class="staple"></span><span class="clip"></span><span class="paper-hole"></span><span class="paper-hole second"></span><span class="ring"></span><span class="crease"></span><div class="content">
@@ -296,6 +331,7 @@ body{padding-top:88px!important}
     "url": "https://raw.githubusercontent.com/unm-1/l/main/ROSSETTO%20SUL%20VETRO%20-%20MADDALENA.mp3"
   }
 ];
+  const bilingualLyrics = {"L'AUREOLA DI CENERE":[["Ah...","아."],["Le campane sanno.","종소리는 모든 걸 알고 있어."],["Ma non parlano mai.","하지만 입을 열지는 않지."],null,["Nel vetro nero tremano i ceri","검은 유리창에 촛불이 흔들리고"],["La città si inchina ai miei pensieri","도시는 내 생각 앞에 고개를 숙이지."],["Ho il passo lento di chi sa aspettare","기다릴 줄 아는 사람답게 느긋하게 걷고"],["E un cielo intero che non sa giudicare","머리 위엔 심판할 줄 모르는 하늘이 펼쳐져 있어."],null,["Un vecchio trono porta odore di sale","오래된 왕좌에선 바다 소금 냄새가 나고"],["Ogni promessa ha il suo funerale","모든 약속엔 저마다의 장례가 따르지."],["Nel confessionale non cerco ragione","고해소에서 옳고 그름을 찾지 않아."],["Ho imparato a chiamare il silenzio perdono","침묵을 용서라 부르는 법을 배웠거든."],null,["La seta sfiora il freddo del marmo","비단이 차가운 대리석을 스치고"],["Un nome sepolto riposa nel palmo","묻어둔 이름 하나가 손바닥에 잠들어 있어."],["Se il mondo mi chiede di inginocchiarmi","세상이 내게 무릎 꿇으라 한다면"],["Sorrido piano, lascio parlare gli altri","난 그저 옅게 웃고, 다른 이들이 떠들게 두지."],null,["Suonano le campane, ma per chi?","종이 울리는군. 대체 누구를 위해서지?"],["La luce cade e io rimango qui","빛이 저물어도 나는 여기에 남아."],["Con un'aureola fatta di cenere","재로 만든 후광을 쓰고서"],["Ho dato al buio un modo di splendere","어둠에도 빛나는 법을 가르쳤지."],null,["Se il cielo chiude tutte le sue porte","하늘이 모든 문을 닫아버린다면"],["Farò del silenzio la mia corte","침묵으로 나만의 궁정을 만들겠어."],["E quando il mondo griderà il mio nome","세상이 내 이름을 외쳐댈 때"],["Risponderò senza una benedizione","축복 따위 없이 대답해 주지."],null,["La seta nasconde la lama del giorno","비단 아래엔 낮의 칼날이 숨겨져 있어."],["Nessuno domanda se farò ritorno","내가 돌아올지 묻는 사람은 없지."],["Un sorriso basta, si spegne il rumore","미소 하나면 소란은 잠잠해지고"],["Chi sa distinguere il rispetto dal terrore?","존경과 공포를 구별할 사람이 얼마나 될까?"],null,["Ho un nome nascosto sotto il velluto","벨벳 아래 감춰둔 이름이 있어."],["Che a nessun giudice ho mai venduto","그 어떤 재판관에게도 넘기지 않은 이름."],["Se un giorno lo dirò a te soltanto","언젠가 너에게만 그 이름을 말한다면"],["Sarà più nudo di qualsiasi pianto","어떤 눈물보다도 숨김없는 고백이겠지."],null,["Le candele muoiono una per una","촛불이 하나씩 꺼져가고"],["La mia ombra non cerca fortuna","내 그림자는 행운을 바라지 않아."],["Non chiedo assoluzione, né pietà","사면도, 동정도 구하지 않지."],["Solo qualcuno che non se ne andrà","그저 떠나지 않을 누군가만 있으면 돼."],null,["Suonano le campane, ma per chi?","종이 울리는군. 대체 누구를 위해서지?"],["La luce cade e io rimango qui","빛이 저물어도 나는 여기에 남아."],["Con un'aureola fatta di cenere","재로 만든 후광을 쓰고서"],["Ho dato al buio un modo di splendere","어둠에도 빛나는 법을 가르쳤지."],null,["Se il cielo chiude tutte le sue porte","하늘이 모든 문을 닫아버린다면"],["Farò del silenzio la mia corte","침묵으로 나만의 궁정을 만들겠어."],["E quando il mondo griderà il mio nome","세상이 내 이름을 외쳐댈 때"],["Risponderò senza una benedizione","축복 따위 없이 대답해 주지."],null,["Le campane tacciono.","종소리가 멎었군."],["Io no.","하지만 나는 아니야."]],"VELENO DI VELLUTO":[["Bimba...","아가."],["Non guardare le mani.","손을 보지 말고."],["Guarda chi le bacia.","그 손에 입 맞추는 사람이 누군지 보렴."],null,["La città si scioglie dentro un bicchiere","도시가 술잔 속에서 녹아내리고"],["Il tuo riflesso sa più di me","잔에 비친 네 모습은 나보다 더 많은 걸 알고 있지."],["Ho un rosario chiuso nel taschino","가슴 주머니엔 묵주를 넣어두었지만"],["E un paradiso che non apre per me","낙원은 내게 문을 열어주지 않아."],null,["Il fumo sale lento sul soffitto","연기는 천장으로 느릿하게 피어오르고"],["La luna cade sopra il mio vestito","달빛은 내 옷깃 위로 내려앉아."],["Mi chiedi se conosco la paura","내가 두려움을 아느냐고 묻는구나."],["Ti sorrido, la notte è ancora scura","난 미소를 지을 뿐이야. 밤은 아직 깊으니까."],null,["Ogni santo porta un'ombra","모든 성인에겐 그림자가 있고"],["Ogni trono ha il suo prezzo","모든 왕좌엔 치러야 할 대가가 있지."],["Mentre il coro canta piano","성가대의 노랫소리가 나지막이 흐르는 동안"],["Io ti parlo più da vicino","나는 네게 조금 더 가까이 말을 건네."],null,["Bimba mia, non dire amen","아가, 아멘이라고 말하지 마."],["Quando la notte chiama me","밤이 나를 부를 때는."],["Il velluto nasconde il veleno","벨벳은 독을 감추고 있지만"],["Ma la tua voce mi toglie il terreno","네 목소리는 내 발밑을 흔들어놓는구나."],null,["Bimba mia, resta se vuoi","아가, 원한다면 머무르렴."],["Non per un ordine, non per noi","명령 때문도, 우리라는 이유 때문도 아니라."],["Ho una corona fatta di sale","내 왕관은 소금으로 빚어졌고"],["E un nome vero che non so pronunciare","내 진짜 이름은 차마 입에 올리지 못해."],null,["Tra i vetri scuri dell'ultima auto","마지막 차의 어두운 창문 너머로"],["La pioggia disegna un altro peccato","빗줄기가 또 하나의 죄를 그려내."],["Tu non mi chiedi di essere buono","넌 내게 착한 사람이 되라 하지 않고"],["E io non fingo di chiedere perdono","나도 용서를 비는 척하지 않지."],null,["Le mie parole sanno di vino","내 말에는 와인의 향이 배어 있고"],["Le tue domande cambiano il destino","네 질문은 운명을 바꾸어놓지."],["Ho visto un regno cadere in silenzio","왕국이 소리 없이 무너지는 걸 보았지만"],["Ma non conosco il tuo stesso prezzo","네가 치러야 할 대가만큼은 알지 못해."],null,["Bimba...","아가."],["Se un giorno ti dirò il mio nome","언젠가 내 이름을 네게 알려준다면"],["Non chiamarlo redenzione","그걸 구원이라 부르지는 말아다오."],["Sarà soltanto un uomo stanco","그저 지친 남자 한 사람일 뿐이니까."],["Senza corona, senza un santo","왕관도 성인도 곁에 없는."],null,["E se la luce mi troverà","그리고 빛이 나를 찾아낸다 해도"],["Non so se mi riconoscerà","그 빛이 날 알아볼지는 모르겠구나."],null,["Bimba mia, non dire amen","아가, 아멘이라고 말하지 마."],["Quando la notte chiama me","밤이 나를 부를 때는."],["Il velluto nasconde il veleno","벨벳은 독을 감추고 있지만"],["Ma la tua voce mi toglie il terreno","네 목소리는 내 발밑을 흔들어놓는구나."],null,["Bimba mia, resta se vuoi","아가, 원한다면 머무르렴."],["Non per un ordine, non per noi","명령 때문도, 우리라는 이유 때문도 아니라."],["Ho una corona fatta di sale","내 왕관은 소금으로 빚어졌고"],["E un nome vero che non so pronunciare","내 진짜 이름은 차마 입에 올리지 못해."],null,["Bimba mia...","나의 아가."],["Il cielo può aspettare.","천국은 좀 더 기다려도 되겠지."]],"FERRO SOTTO PELLE":[["Ehi, Tappo...","야, 꼬맹이."],["Non guardarmi così.","그런 눈으로 보지 마."],["Lo sai che torno.","내가 돌아올 거 알잖아."],null,["L'asfalto bagnato riflette il neon","젖은 아스팔트에 네온이 비치고"],["Ho le nocche rotte e un altro perché","손등은 까지고, 또 하나의 이유가 생겼지."],["Il porto respira benzina e sale","항구에선 휘발유와 소금 냄새가 진동해."],["E io non ho imparato a parlare piano","난 아직도 조용히 말하는 법을 몰라."],null,["La pelle ricorda ogni vecchio errore","피부엔 지난 실수들이 고스란히 남아 있고"],["La bocca non sa chiedere un favore","이 입은 부탁하는 법도 모르지."],["Ti vedo sorridere sotto la pioggia","빗속에서 웃는 널 보면"],["E per un momento si ferma la guerra","그 순간만큼은 전쟁도 멈추는 것 같아."],null,["Non sono un santo, non sono un eroe","난 성인도 아니고 영웅도 아니야."],["Ho solo il sangue che batte più forte","그저 피가 더 뜨겁게 끓을 뿐이지."],["Quando mi chiami da quella strada","네가 저 거리에서 날 부르면"],["La mia rabbia cambia direzione","내 분노가 향할 곳도 바뀌어."],null,["Ehi, Tappo, se trema la città","야, 꼬맹이. 이 도시가 흔들려도"],["Io non cambio strada, resto qua","난 길을 바꾸지 않아. 여기 있을 거야."],["Con il ferro sotto la pelle","피부 밑에 쇠를 품고"],["E il fuoco acceso nelle vene","핏줄엔 불을 지핀 채로."],null,["Tappo, non so dire \"mi manchi\"","꼬맹이, 보고 싶다는 말은 못 하겠어."],["Ma so tornare anche senza armi","그래도 무기 하나 없이 돌아오는 법은 알지."],["Se il mondo brucia fino al mare","세상이 바다 끝까지 불타버려도"],["Io trovo sempre dove tornare","난 반드시 돌아갈 곳을 찾아내."],null,["Il motore ringhia alle tre di notte","새벽 세 시, 엔진이 으르렁거리고"],["La radio parla di strade interrotte","라디오에선 막힌 도로 소식이 흘러나와."],["Ho detto troppe volte \"non importa\"","괜찮다는 말을 너무 많이 했지."],["Poi sono rimasto davanti alla porta","그러고는 문 앞에서 떠나질 못했어."],null,["Tu ridi di me, dici che sono matto","넌 날 비웃으며 미친놈이라 하지."],["Io scuoto la testa e tiro un altro fiato","난 고개를 젓고 숨을 다시 들이켜."],["Ho fatto del caos la mia religione","혼란을 내 신앙으로 삼았는데"],["Ma con te perdo la direzione","네 앞에선 어디로 가야 할지 모르겠어."],null,["Non chiedermi di essere buono","착한 사람이 되라곤 하지 마."],["Chiedimi soltanto di tornare","그냥 돌아오라고만 해."],["Non chiedermi parole dolci","달콤한 말도 요구하지 마."],["Non so nemmeno da dove iniziare","어디서부터 해야 할지도 모르니까."],null,["Ma se la notte fa troppo rumore","하지만 밤이 너무 시끄러워지면"],["Riconosci il passo sulle scale","계단을 올라오는 발소리를 알아봐 줘."],["Sono io, con le mani vuote","나야, 빈손으로 돌아온 놈."],["E qualcosa che non so spiegare","설명할 수 없는 뭔가를 품은 채."],null,["Ehi, Tappo, se trema la città","야, 꼬맹이. 이 도시가 흔들려도"],["Io non cambio strada, resto qua","난 길을 바꾸지 않아. 여기 있을 거야."],["Con il ferro sotto la pelle","피부 밑에 쇠를 품고"],["E il fuoco acceso nelle vene","핏줄엔 불을 지핀 채로."],null,["Tappo, non so dire \"mi manchi\"","꼬맹이, 보고 싶다는 말은 못 하겠어."],["Ma so tornare anche senza armi","그래도 무기 하나 없이 돌아오는 법은 알지."],["Se il mondo brucia fino al mare","세상이 바다 끝까지 불타버려도"],["Io trovo sempre dove tornare","난 반드시 돌아갈 곳을 찾아내."],null,["Ehi, Tappo...","야, 꼬맹이."],["Te l'avevo detto.","내가 말했잖아."],["Sono tornato.","돌아왔다고."]],"FINO ALL'ULTIMO COLPO":[["Il porto dorme.","항구는 잠들었지."],["Io non dormo mai.","난 절대 잠들지 않아."],null,["Nei vicoli stretti ho imparato a correre","좁은 골목에서 달리는 법을 배웠어."],["Con i denti stretti, senza arrendermi","이를 악물고, 절대 항복하지 않으면서."],["Il porto di notte sa di ferro e sale","밤의 항구에선 쇠와 소금 맛이 나고"],["Una parola data non si può cambiare","한번 뱉은 약속은 바꿀 수 없어."],null,["Ho una cicatrice che non sa mentire","거짓말할 줄 모르는 흉터가 있고"],["E troppe cose che non so dire","입 밖에 못 낸 말은 너무 많지."],["La città mi ha insegnato a colpire","이 도시는 내게 때리는 법을 가르쳤지만"],["Ma non mi ha insegnato come guarire","상처를 낫게 하는 법은 가르치지 않았어."],null,["Sento le sirene sopra il mare","바다 너머로 사이렌이 들려와."],["Un altro ordine, un altro temporale","또 다른 명령, 또 다른 폭풍우."],["Non chiedermi se ho paura","무섭냐고 묻지 마."],["La mia risposta è ancora qui","내 대답은 지금도 이 자리에 있으니까."],null,["Se cade il cielo, lo reggo io","하늘이 무너진다면 내가 받쳐 들겠어."],["Con queste mani, col fiato mio","이 두 손과 내 마지막 숨으로."],["Le sirene urlano, resto qui","사이렌이 울어도 난 여기 남아."],["Non lascio indietro nessuno, mai","누구도 뒤에 버려두지 않아. 절대로."],null,["Ho fatto pace con il temporale","난 폭풍과도 화해했어."],["Non sono nato per scappare","도망치려고 태어난 게 아니니까."],["Anche se il mondo mi vuole spezzare","세상이 날 부러뜨리려 해도"],["Sarò l'ultimo a mollare","끝까지 버티는 건 나일 거야."],null,["La radio gracchia, si accende la notte","라디오가 지직거리고, 밤이 다시 시작돼."],["Ho visto amici perdere le lotte","싸움에서 쓰러지는 친구들을 보았어."],["Non porto medaglie, non chiedo perdono","훈장도 걸지 않고, 용서도 구하지 않아."],["Resto fedele a ciò che sono","난 그저 나 자신에게 충실할 뿐이야."],null,["Non so parlare quando tutto brucia","모든 게 불탈 땐 무슨 말을 해야 할지 몰라."],["La pelle dice ciò che la bocca rifiuta","피부가 입으로는 못 할 이야기를 대신하지."],["Se mi guardi prima del rumore","소란이 일어나기 전에 날 바라본다면"],["Per un secondo non sono di ferro","잠깐은 나도 쇳덩이가 아닌 사람이 돼."],null,["Ho fatto a pugni con la paura","두려움과 주먹다짐하며 살아왔고"],["Ho chiamato casa questa guerra","이 전쟁터를 집이라고 불렀어."],["Ma se qualcuno mi chiede di restare","그런데 누군가 내게 머물러 달라고 한다면"],["Forse imparerò anche a respirare","어쩌면 숨 쉬는 법도 배울 수 있겠지."],null,["Se cade il cielo, lo reggo io","하늘이 무너진다면 내가 받쳐 들겠어."],["Con queste mani, col fiato mio","이 두 손과 내 마지막 숨으로."],["Le sirene urlano, resto qui","사이렌이 울어도 난 여기 남아."],["Non lascio indietro nessuno, mai","누구도 뒤에 버려두지 않아. 절대로."],null,["Ho fatto pace con il temporale","난 폭풍과도 화해했어."],["Non sono nato per scappare","도망치려고 태어난 게 아니니까."],["Anche se il mondo mi vuole spezzare","세상이 날 부러뜨리려 해도"],["Sarò l'ultimo a mollare","끝까지 버티는 건 나일 거야."],null,["Ancora in piedi.","아직 두 발로 서 있어."],["Ancora qui.","여전히 여기야."]],"INCHIOSTRO E SETA":[["Signorina...","아가씨."],["La prego, si accomodi.","부디 편히 앉으시죠."],["Abbiamo tutta la notte.","밤은 아직 길답니다."],null,["Un bicchiere intatto sul tavolo scuro","어두운 탁자 위엔 손대지 않은 잔 하나."],["Un sorriso pulito, un pensiero impuro","단정한 미소 뒤엔 불온한 생각이 숨어 있죠."],["Le dita scorrono sopra la carta","손끝이 종이 위를 미끄러지고"],["La porta è aperta, ma lei non si alza","문은 열려 있는데, 당신은 자리에서 일어나지 않네요."],null,["L'ambra del vino riflette il suo viso","호박빛 와인에 당신 얼굴이 비치고"],["Le offro una scelta con un sorriso","저는 미소와 함께 선택권을 드립니다."],["Ho mille risposte per ogni domanda","어떤 질문이든 답은 천 가지쯤 준비돼 있지만"],["Ma la sua voce mi coglie alla sprovvista","당신 목소리 앞에선 뜻밖에 허를 찔리고 맙니다."],null,["Tra la cortesia e la vertigine","예의와 아찔함의 경계에"],["C'è una pagina da non firmare","서명해선 안 될 페이지가 하나 있죠."],["Mi guarda come se sapesse già","당신은 이미 알고 있다는 듯 바라봅니다."],["Che cosa non riesco a confessare","제가 끝내 고백하지 못하는 것이 무엇인지."],null,["Signorina, non firmi ancora","아가씨, 아직 서명하지 마세요."],["La notte è giovane, il mondo aspetta","밤은 이제 시작이고, 세상은 기다려줄 테니."],["La mia voce sembra seta","제 목소리는 비단처럼 부드럽지만"],["Ma nasconde una tempesta","그 안에는 폭풍이 숨어 있습니다."],null,["Signorina, che ironia","아가씨, 참으로 아이러니하군요."],["Ogni cifra torna, tranne la mia","모든 숫자는 맞아떨어지는데, 제 것만 어긋납니다."],["Le offro il mondo con un sorriso","웃으며 온 세상을 내어드릴 순 있어도"],["Ma non so comprare il paradiso","천국을 사는 방법만큼은 모르겠군요."],null,["Le dico \"prego\", lei dice \"vedremo\"","제가 '부디'라고 하면, 당신은 '두고 보죠'라고 하죠."],["Un gioco sottile, un dolce veleno","섬세한 밀고 당기기, 달콤한 독약."],["L'orologio segna quasi le tre","시곗바늘은 새벽 세 시를 향하고"],["E per una volta non conto perché","이번만큼은 시간이 흐르는 이유를 헤아리지 않아요."],null,["Conosco i segreti di questa città","이 도시의 비밀이라면 모두 알고 있죠."],["Ogni promessa, ogni falsità","온갖 약속과 거짓말까지도."],["Ma quando lei ride davanti a me","하지만 당신이 제 앞에서 웃을 때면"],["Dimentico il prezzo di quello che c'è","눈앞의 모든 것에 붙은 값을 잊게 됩니다."],null,["Non è una minaccia, signorina","협박이 아닙니다, 아가씨."],["È soltanto un'osservazione","그저 사실을 말씀드리는 거죠."],["Persino un uomo come me","저 같은 남자조차도"],["Può perdere il filo della ragione","가끔은 이성의 끈을 놓을 수 있다는 사실을요."],null,["Signorina, non firmi ancora","아가씨, 아직 서명하지 마세요."],["La notte è giovane, il mondo aspetta","밤은 이제 시작이고, 세상은 기다려줄 테니."],["La mia voce sembra seta","제 목소리는 비단처럼 부드럽지만"],["Ma nasconde una tempesta","그 안에는 폭풍이 숨어 있습니다."],null,["Signorina, che ironia","아가씨, 참으로 아이러니하군요."],["Ogni cifra torna, tranne la mia","모든 숫자는 맞아떨어지는데, 제 것만 어긋납니다."],["Le offro il mondo con un sorriso","웃으며 온 세상을 내어드릴 순 있어도"],["Ma non so comprare il paradiso","천국을 사는 방법만큼은 모르겠군요."],null,["Ho imparato a vincere in silenzio","저는 조용히 승리하는 법을 배웠습니다."],["A non lasciare niente al caso","어떤 것도 우연에 맡기지 않는 법도요."],["Ma non c'è firma né documento","하지만 어떤 서명이나 문서로도"],["Che possa trattenere un passo","떠나는 발걸음을 붙잡을 순 없죠."],null,["E se domani lei se ne andrà","내일 당신이 떠난다 해도"],["Il mio sorriso non cambierà","제 미소는 달라지지 않을 겁니다."],["Soltanto il vuoto sulla sedia","오직 빈 의자만이"],["Saprà qualcosa che non dico mai","제가 한 번도 말하지 않은 진실을 알겠죠."],null,["Signorina, non firmi ancora","아가씨, 아직 서명하지 마세요."],["La notte è giovane, il mondo aspetta","밤은 이제 시작이고, 세상은 기다려줄 테니."],["La mia voce sembra seta","제 목소리는 비단처럼 부드럽지만"],["Ma nasconde una tempesta","그 안에는 폭풍이 숨어 있습니다."],null,["Signorina, che ironia","아가씨, 참으로 아이러니하군요."],["Ogni cifra torna, tranne la mia","모든 숫자는 맞아떨어지는데, 제 것만 어긋납니다."],["Le offro il mondo con un sorriso","웃으며 온 세상을 내어드릴 순 있어도"],["Ma non so comprare il paradiso","천국을 사는 방법만큼은 모르겠군요."],null,["È stato un piacere, signorina.","즐거웠습니다, 아가씨."],["Un autentico piacere.","진심으로요."]],"SORRISO DI VETRO":[["Una firma.","서명 하나."],["Un sorriso.","미소 하나."],["E tutto cambia.","그걸로 모든 게 달라지죠."],null,["La penna scivola sopra il destino","펜촉이 운명의 위를 미끄러지고"],["La notte brilla nel fondo del vino","와인잔 바닥에서 밤이 반짝입니다."],["Un gesto gentile, una voce educata","다정한 몸짓, 예의 바른 목소리."],["Una verità perfettamente piegata","그리고 완벽하게 접어 감춘 진실 하나."],null,["Conosco il peso di un nome taciuto","말하지 못한 이름의 무게를 알고 있죠."],["Ho fatto dell'ordine il mio unico scudo","질서를 유일한 방패로 삼아왔으니까요."],["Tu vedi un sorriso, non leggi il contratto","당신은 미소만 보고 계약서는 읽지 않네요."],["Nel punto più dolce nascondo il ricatto","가장 달콤한 대목에 협박을 숨겨두었는데."],null,["Ogni parola trova il suo posto","모든 말에는 제자리가 있고"],["Anche il silenzio ha sempre un costo","침묵에도 언제나 값이 붙습니다."],["Ti porgo la mano, ti dico di sì","손을 내밀며 승낙한다고 말하는 순간"],["Non sai cosa cambia da qui","무엇이 달라지는지 당신은 모르겠죠."],null,["Con un sorriso di vetro","유리처럼 매끄러운 미소로"],["Tengo il caos un passo indietro","혼란을 저만치 물려놓습니다."],["Ti dico \"prego\", ti dico \"sì\"","'어서요', '물론이죠'라고 말하면서"],["Mentre la stanza si chiude così","그렇게 방의 문은 조용히 닫히죠."],null,["Sul bordo sottile della verità","진실의 아슬아슬한 가장자리에서"],["Nessuno sa chi pagherà","누가 대가를 치를지는 아무도 모릅니다."],["E dietro un sorriso perfetto","그리고 완벽한 미소 뒤에는"],["Nascondo il mondo che non ammetto","차마 인정하지 못하는 제 세계를 숨겨두죠."],null,["Un foglio bianco, la pioggia sui vetri","하얀 종이 한 장, 창문을 적시는 빗방울."],["Le mie promesse non fanno rumore","제가 하는 약속은 소리를 내지 않습니다."],["Ho imparato a contare ogni errore","모든 실수를 헤아리는 법을 배웠죠."],["Tranne le crepe dentro il mio cuore","제 마음에 난 균열만 빼고요."],null,["I numeri tornano, ma non la notte","숫자는 맞아떨어져도 그 밤은 돌아오지 않네요."],["Il conto è perfetto, le mani son vuote","장부는 완벽한데 두 손은 텅 비었습니다."],["Ho messo un prezzo anche al perdono","용서에조차 가격을 매겨보았지만"],["Ma certe assenze non si comprano","어떤 부재는 돈으로 메울 수 없군요."],null,["Se tolgo il sorriso, cosa rimane?","이 미소를 지우면 무엇이 남을까요?"],["Un uomo soltanto, con le sue domande","질문을 품은 평범한 남자 하나뿐이겠죠."],["Per una volta non voglio sapere","이번만큼은 알고 싶지 않습니다."],["Quanto mi costerà perdere","무언가를 잃는 데 얼마나 들지."],null,["Con un sorriso di vetro","유리처럼 매끄러운 미소로"],["Tengo il caos un passo indietro","혼란을 저만치 물려놓습니다."],["Ti dico \"prego\", ti dico \"sì\"","'어서요', '물론이죠'라고 말하면서"],["Mentre la stanza si chiude così","그렇게 방의 문은 조용히 닫히죠."],null,["Sul bordo sottile della verità","진실의 아슬아슬한 가장자리에서"],["Nessuno sa chi pagherà","누가 대가를 치를지는 아무도 모릅니다."],["E dietro un sorriso perfetto","그리고 완벽한 미소 뒤에는"],["Nascondo il mondo che non ammetto","차마 인정하지 못하는 제 세계를 숨겨두죠."],null,["Con piacere.","기꺼이요."],["Come sempre.","언제나 그렇듯이."]],"BACIO AL NEON":[["Tesoro...","자기야."],["Gli occhi quassù.","눈은 여기, 위로."],["Il gioco comincia adesso.","놀이는 이제 시작이야."],null,["I tacchi fanno musica sul pavimento","하이힐이 바닥을 두드리며 음악을 만들고"],["La sala trattiene il respiro un momento","홀 안의 모두가 잠시 숨을 죽여."],["Il rossetto rosso macchia il cristallo","붉은 립스틱이 크리스털 잔에 흔적을 남기고"],["E un'altra bugia scivola nel ballo","또 하나의 거짓말이 춤 속으로 스며들지."],null,["La seta mi sfiora, la notte mi guarda","비단이 내 몸을 스치고, 밤은 나를 바라봐."],["Una risata, una porta che tarda","웃음소리 하나, 좀처럼 열리지 않는 문 하나."],["Tu vuoi sapere chi sono davvero","넌 내가 진짜 어떤 사람인지 알고 싶겠지."],["Ma ogni risposta ha un sapore diverso","그런데 대답마다 맛이 조금씩 다른걸."],null,["Non confondere il profumo col cuore","향수 냄새를 진심으로 착각하지 마."],["Non confondere il gioco con l'amore","놀이를 사랑으로 오해하지도 말고."],["Se vuoi un segreto, avvicinati un po'","비밀이 궁금하면 좀 더 가까이 와."],["Ma non prometto quello che non so","다만 모르는 것까지 약속하진 않을게."],null,["Tesoro, balla ancora con me","자기야, 나랑 조금 더 춤추자."],["Sotto le luci viola e blu","보랏빛과 푸른 조명 아래서."],["Mi vuoi capire, ma non puoi","날 이해하고 싶겠지만, 그건 어려울걸."],["Sono il riflesso che non trovi più","난 네가 다시는 찾지 못할 반짝임이니까."],null,["Tesoro, dimmi la verità","자기야, 솔직하게 말해봐."],["Quando la musica finirà","음악이 끝나고 나면"],["Non sono tuo, non sono un gioco","난 네 것도, 장난감도 아니야."],["Sono la scintilla dentro il fuoco","난 불꽃 속에서 튀어 오르는 작은 불씨지."],null,["Uno specchio dorato, un sorriso sul viso","황금빛 거울, 얼굴에 걸린 미소."],["Le tue domande mi fanno sorridere","네 질문을 들으면 웃음이 나와."],["Ho scelto il rosso, ho scelto il velluto","붉은색도, 벨벳도 내가 직접 고른 거야."],["Non devo niente a chi resta seduto","가만히 앉아 구경하는 사람에게 빚진 건 없어."],null,["Una mano sul fianco, un passo leggero","허리에 얹힌 손, 가벼운 발걸음."],["Basta uno sguardo, capisco il pensiero","눈빛 하나면 무슨 생각인지 알 수 있지."],["La città mi racconta le sue confessioni","도시는 내게 비밀스러운 고백을 들려줘."],["Le raccolgo piano tra mille canzoni","수많은 노래 사이에서 하나씩 주워 담지."],null,["Tesoro, perché tanta fretta?","자기야, 뭘 그렇게 서둘러?"],["La notte è lunga, la musica aspetta","밤은 길고, 음악은 기다려줄 텐데."],["Mi dici che vuoi conoscermi","날 알고 싶다고 말하는구나."],["Ma sei sicuro di volerlo davvero?","정말 그럴 각오가 되어 있어?"],null,["Tesoro, balla ancora con me","자기야, 나랑 조금 더 춤추자."],["Sotto le luci viola e blu","보랏빛과 푸른 조명 아래서."],["Mi vuoi capire, ma non puoi","날 이해하고 싶겠지만, 그건 어려울걸."],["Sono il riflesso che non trovi più","난 네가 다시는 찾지 못할 반짝임이니까."],null,["Tesoro, dimmi la verità","자기야, 솔직하게 말해봐."],["Quando la musica finirà","음악이 끝나고 나면"],["Non sono tuo, non sono un gioco","난 네 것도, 장난감도 아니야."],["Sono la scintilla dentro il fuoco","난 불꽃 속에서 튀어 오르는 작은 불씨지."],null,["Adesso ascolta la mia voce","이제 내 목소리를 잘 들어."],["Quando la musica si fa più debole","음악 소리가 잦아들면"],["Non cambio pelle per farmi capire","이해받겠다고 내 모습을 바꾸진 않아."],["Non devo scegliere come apparire","어떻게 보여야 할지 선택을 강요받을 이유도 없지."],null,["Il trucco resta, il sorriso anche","화장도 그대로, 미소도 그대로야."],["Ma conosco il peso delle tue domande","하지만 네 질문이 얼마나 무거운지는 알아."],["Se vuoi restare, resta davvero","머물 거라면 진심으로 머물러."],["Non innamorarti soltanto del mistero","그저 신비로운 모습에만 반하지는 말고."],null,["Tesoro, balla ancora con me","자기야, 나랑 조금 더 춤추자."],["Sotto le luci viola e blu","보랏빛과 푸른 조명 아래서."],["Mi vuoi capire, ma non puoi","날 이해하고 싶겠지만, 그건 어려울걸."],["Sono il riflesso che non trovi più","난 네가 다시는 찾지 못할 반짝임이니까."],null,["Tesoro, dimmi la verità","자기야, 솔직하게 말해봐."],["Quando la musica finirà","음악이 끝나고 나면"],["Non sono tuo, non sono un gioco","난 네 것도, 장난감도 아니야."],["Sono la scintilla dentro il fuoco","난 불꽃 속에서 튀어 오르는 작은 불씨지."],null,["Buonanotte, tesoro.","잘 자, 자기야."],["Non lasciare il cuore sul bancone.","마음은 바 카운터에 두고 가지 마."]],"ROSSETTO SUL VETRO":[["Un bacio sul vetro.","유리잔에 남긴 입맞춤 하나."],["Un segreto nel vino.","와인 속에 숨긴 비밀 하나."],["Buonasera, tesoro.","좋은 저녁이야, 자기야."],null,["Tacchi sul marmo, la sala si accende","대리석 위로 하이힐이 울리고, 홀이 환해져."],["Il fumo disegna ciò che non si comprende","연기는 이해할 수 없는 형상을 그리지."],["Un lampo di rosso sul bordo del vino","와인잔 가장자리에 번지는 붉은 빛."],["Sorrido al destino, lo tengo vicino","난 운명에 미소 짓고 곁에 붙잡아 둬."],null,["Specchi dorati, bugie di velluto","황금 거울과 벨벳처럼 부드러운 거짓말."],["Ogni sorriso è un segreto bevuto","미소 하나마다 삼켜버린 비밀이 있어."],["Mi guardi negli occhi, dimentichi il nome","넌 내 눈을 바라보다 이름조차 잊고"],["La notte conosce tutte le persone","밤은 그곳에 있는 사람을 모두 알고 있지."],null,["La musica sale, mi sfiora la pelle","음악이 고조되며 내 피부를 스치고"],["Le luci si perdono in mille scintille","조명은 수천 개의 불빛으로 흩어져."],["Tu credi di avermi capito già","넌 벌써 날 다 이해했다고 생각하지?"],["Che dolce errore, che ingenuità","참 달콤한 착각이야. 얼마나 순진한지."],null,["Lascia che il neon scivoli su me","네온빛이 내 위로 흘러내리게 놔둬."],["Sono il riflesso che non sai perché","이유도 모른 채 넌 내 반짝임을 바라보지."],["Balla più piano, non sai chi sono","조금 천천히 춤춰. 넌 내가 누군지 몰라."],["Il mio silenzio vale più dell'oro","내 침묵은 황금보다 값지거든."],null,["Un bacio nell'aria, una verità","허공에 띄운 입맞춤과 진실 하나."],["E nessuno compra la mia libertà","누구도 내 자유를 사들일 순 없어."],["Sotto le luci di questa città","이 도시의 불빛 아래서"],["Nessuno saprà cosa resterà","무엇이 남을지는 아무도 모르겠지."],null,["Parole leggere, un gioco elegante","가벼운 말들과 우아한 놀이."],["Una mano che trema, uno sguardo distante","떨리는 손 하나, 멀어진 시선 하나."],["Raccolgo segreti tra seta e champagne","비단과 샴페인 사이에서 비밀을 모아"],["Li lascio brillare, poi spariscono già","잠시 빛나게 두었다가 이내 사라지게 하지."],null,["Quando la musica smette di urlare","음악이 더는 소리치지 않을 때"],["Resta una voce che sa tagliare","날카롭게 베어내는 목소리만 남아."],["Tolgo il sorriso, non la bellezza","미소는 거둬도 아름다움은 지우지 않아."],["La notte mi deve ancora una carezza","밤은 아직 내게 다정한 손길 하나를 빚졌거든."],null,["E se il mio riflesso potesse parlare","거울 속 내 모습이 말을 할 수 있다면"],["Direbbe le cose che so nascondere","내가 숨길 줄 아는 것들을 털어놓겠지."],["Ma chiudo lo specchio, ritorno a brillare","하지만 거울을 닫고 다시 환하게 빛날 거야."],["Non sono un segreto da possedere","난 누군가 소유할 수 있는 비밀이 아니니까."],null,["Lascia che il neon scivoli su me","네온빛이 내 위로 흘러내리게 놔둬."],["Sono il riflesso che non sai perché","이유도 모른 채 넌 내 반짝임을 바라보지."],["Balla più piano, non sai chi sono","조금 천천히 춤춰. 넌 내가 누군지 몰라."],["Il mio silenzio vale più dell'oro","내 침묵은 황금보다 값지거든."],null,["Un bacio nell'aria, una verità","허공에 띄운 입맞춤과 진실 하나."],["E nessuno compra la mia libertà","누구도 내 자유를 사들일 순 없어."],["Sotto le luci di questa città","이 도시의 불빛 아래서"],["Nessuno saprà cosa resterà","무엇이 남을지는 아무도 모르겠지."],null,["Sorridi, tesoro.","웃어, 자기야."],["Ti stanno guardando.","사람들이 널 보고 있거든."]]};
   const audio = document.getElementById('lt-ost-audio');
   const play = document.getElementById('lt-ost-toggle');
   const prev = document.getElementById('lt-ost-prev');
@@ -308,15 +344,37 @@ body{padding-top:88px!important}
   const list = document.getElementById('lt-ost-list');
   const choices = document.getElementById('lt-ost-choices');
   const status = document.getElementById('lt-ost-status');
+  const nativeButton = document.getElementById('lt-ost-native-toggle');
+  const lyricsButton = document.getElementById('lt-ost-lyrics-toggle');
+  const lyricsPanel = document.getElementById('lt-ost-lyrics');
+  const lyricsClose = document.getElementById('lt-ost-lyrics-close');
+  const lyricsContent = document.getElementById('lt-ost-lyrics-content');
+  const lyricsTitle = document.getElementById('lt-ost-lyrics-title');
   let index = 0;
   let pendingUnlock = false;
   let deliberatelyPaused = false;
   let statusTimer = null;
   let currentRequest = 0;
+  let sourceFallback = 0;
+  let userInitiated = false;
+  const playerRoot = document.getElementById('lt-ost-player');
+  // Primary raw GitHub MP3, then GitHub's raw endpoint and jsDelivr CDN.
+  // Sources are alternates for accessibility, not mirrors with guaranteed uptime.
+  function trackSource(i, fallback) {
+    const primary = tracks[i].url;
+    const suffix = primary.split('/main/')[1];
+    if (!suffix || fallback === 0) return primary;
+    if (fallback === 1) return 'https://github.com/unm-1/l/raw/refs/heads/main/' + suffix;
+    return 'https://cdn.jsdelivr.net/gh/unm-1/l@main/' + suffix;
+  }
+  function loadTrackSource() {
+    ++currentRequest;
+    audio.src = trackSource(index,sourceFallback);
+    audio.load();
+  }
 
-  audio.volume = 0.55;
-  audio.src = tracks[0].url;
-
+  audio.volume = 0.75;
+  audio.muted = false;
   // List tracks under each character: headings and titles are textContent, never HTML.
   const names = ['MICHELE', 'PIETRO', 'MATTEO', 'MADDALENA'];
   const buttons = [];
@@ -350,11 +408,53 @@ body{padding-top:88px!important}
     });
   });
 
-  function notify(text, show) {
+  function renderLyrics() {
+    const track = tracks[index];
+    lyricsTitle.textContent = track.title + ' — ' + track.latin;
+    lyricsContent.replaceChildren();
+    const lines = bilingualLyrics[track.title] || [];
+    if (!lines.length) {
+      const empty = document.createElement('p');
+      empty.className = 'lt-lyrics-empty';
+      empty.textContent = '등록된 가사가 없습니다.';
+      lyricsContent.appendChild(empty);
+    }
+    const frag = document.createDocumentFragment();
+    lines.forEach(pair => {
+      if (pair === null) {
+        const gap = document.createElement('div');
+        gap.className = 'lt-lyrics-gap';
+        frag.appendChild(gap);
+        return;
+      }
+      const section = document.createElement('div');
+      section.className = 'lt-lyrics-pair';
+      const italian = document.createElement('div');
+      italian.className = 'lt-lyrics-it';
+      italian.lang = 'it';
+      italian.textContent = pair[0];
+      const korean = document.createElement('div');
+      korean.className = 'lt-lyrics-ko';
+      korean.lang = 'ko';
+      korean.textContent = pair[1];
+      section.append(italian,korean);
+      frag.appendChild(section);
+    });
+    lyricsContent.appendChild(frag);
+    lyricsContent.scrollTop = 0;
+  }
+  function toggleLyrics(open) {
+    lyricsPanel.hidden = !open;
+    lyricsButton.setAttribute('aria-expanded',String(open));
+    lyricsButton.setAttribute('aria-label',open ? '가사 닫기' : '가사 보기');
+    if (open) toggleList(false);
+  }
+  function notify(text, show, sticky=false) {
     status.textContent = text;
     status.dataset.show = String(!!show);
     if (statusTimer !== null) clearTimeout(statusTimer);
-    if (show) statusTimer = setTimeout(() => { status.dataset.show = 'false'; }, 5000);
+    statusTimer = null;
+    if (show && !sticky) statusTimer = setTimeout(() => { status.dataset.show = 'false'; }, 9500);
   }
   function update() {
     const t = tracks[index];
@@ -370,22 +470,25 @@ body{padding-top:88px!important}
       b.indicator.textContent = i === index ? (audio.paused ? '●' : '♫') : '';
     });
   }
-  function attemptPlay() {
+  function attemptPlay(manual=false) {
     const request = ++currentRequest;
     deliberatelyPaused = false;
+    if (manual) userInitiated = true;
     let result;
     try { result = audio.play(); }
-    catch(e) { pendingUnlock = true; notify('브라우저 자동재생 제한 · ▶ 버튼을 눌러주세요',true); return; }
+    catch(e) { pendingUnlock = true; notify('재생이 차단됐어요. ▶을 눌러주세요. 곡 목록의 MP3 직접 열기도 이용할 수 있습니다.',true,true); return; }
     if (result && typeof result.then === 'function') {
       result.then(() => {
         if (request !== currentRequest) return;
         pendingUnlock = false;
-        notify('', false);
+        notify('',false);
         update();
       }).catch(e => {
         if (request !== currentRequest) return;
-        pendingUnlock = e.name === 'NotAllowedError';
-        notify(pendingUnlock ? '자동재생 제한 · ▶ 버튼을 눌러주세요' : '음원을 불러오지 못했습니다',true);
+        if (e && e.name === 'AbortError') return; // source changed during loading
+        pendingUnlock = !!(e && e.name === 'NotAllowedError');
+        if (pendingUnlock) notify('브라우저가 재생을 차단했어요. ▶ 버튼을 눌러주세요.',true,true);
+        else notify('음원 연결 오류입니다. 곡 목록에서 MP3 직접 열기를 확인하세요.',true,true);
         update();
       });
     }
@@ -393,15 +496,17 @@ body{padding-top:88px!important}
   function selectTrack(i, shouldPlay) {
     currentRequest += 1;
     index = (i + tracks.length) % tracks.length;
+    sourceFallback = 0;
     audio.pause();
-    audio.src = tracks[index].url;
-    audio.load();
+    loadTrackSource();
     seek.value = 0;
+    renderLyrics();
     update();
-    if (shouldPlay) attemptPlay();
+    if (shouldPlay) attemptPlay(true);
   }
   function toggleList(open) {
     list.hidden = !open;
+    if (open) { lyricsPanel.hidden = true; lyricsButton.setAttribute('aria-expanded','false'); lyricsButton.setAttribute('aria-label','가사 보기'); }
     listButton.setAttribute('aria-expanded', String(open));
     listButton.title = open ? '목록 닫기' : '캐릭터별 곡 목록';
   }
@@ -412,21 +517,30 @@ body{padding-top:88px!important}
       pendingUnlock = false;
       audio.pause();
       notify('', false);
-    } else attemptPlay();
+    } else attemptPlay(true);
     update();
   });
   prev.addEventListener('click', () => selectTrack(index - 1,true));
   next.addEventListener('click', () => selectTrack(index + 1,true));
   mute.addEventListener('click', () => { audio.muted = !audio.muted; update(); });
   listButton.addEventListener('click', () => toggleList(list.hidden));
+  lyricsButton.addEventListener('click', () => toggleLyrics(lyricsPanel.hidden));
+  lyricsClose.addEventListener('click', () => { toggleLyrics(false); lyricsButton.focus(); });
+  nativeButton.addEventListener('click', () => {
+    const showing = playerRoot.classList.toggle('lt-show-native');
+    audio.controls = showing;
+    nativeButton.textContent = showing ? '기본 플레이어 닫기' : '기본 플레이어';
+  });
   document.addEventListener('pointerdown', (e) => {
     if (!list.hidden && !document.getElementById('lt-ost-player').contains(e.target)) toggleList(false);
+    if (!lyricsPanel.hidden && !document.getElementById('lt-ost-player').contains(e.target)) toggleLyrics(false);
     if (!pendingUnlock || deliberatelyPaused) return;
     if (document.getElementById('lt-ost-player').contains(e.target)) return;
     attemptPlay();
   }, {passive:true});
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && !list.hidden) { toggleList(false); listButton.focus(); }
+    if (e.key === 'Escape' && !lyricsPanel.hidden) { toggleLyrics(false); lyricsButton.focus(); }
     if (pendingUnlock && !deliberatelyPaused) attemptPlay();
   });
   audio.addEventListener('play',update);
@@ -438,7 +552,19 @@ body{padding-top:88px!important}
   seek.addEventListener('input',() => {
     if (Number.isFinite(audio.duration) && audio.duration>0) audio.currentTime = Number(seek.value)/1000*audio.duration;
   });
-  audio.addEventListener('error', () => { notify('음원 주소와 인터넷 연결을 확인해 주세요',true); update(); });
+  audio.addEventListener('error', () => {
+    if (sourceFallback < 2) {
+      ++sourceFallback;
+      const wasUserInitiated = userInitiated;
+      loadTrackSource();
+      notify('첫 음원 주소에서 재생되지 않아 다른 연결 주소를 시도 중입니다.',true);
+      if (wasUserInitiated && !deliberatelyPaused) attemptPlay(true);
+    } else {
+      notify('세 가지 음원 주소로 재생할 수 없어요. 곡 목록의 MP3 직접 열기를 확인하세요.',true,true);
+      update();
+    }
+  });
+  renderLyrics();
   update();
   attemptPlay();
 })();
